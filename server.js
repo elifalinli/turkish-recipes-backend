@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Product = require('./models/model.js')
 const ProductMain = require('./models/model.js')
+const credentials = require('./credentials')
 const app = express();
 
 app.use(express.json())
@@ -41,7 +42,7 @@ app.post('/main', async(req, res) => {
 mongoose.set("strictQuery", false)
 mongoose
   .connect(
-    "mongodb+srv://semraelifalinli:pkl1orbc@turkishrecipes.pid5hsc.mongodb.net/Recipe-Book?retryWrites=true&w=majority"
+    credentials
   )
   .then(() => {
     console.log("connected to mongodb");
