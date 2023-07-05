@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const productSchema = mongoose.Schema(
+const soupSchema = mongoose.Schema(
     {
         name: {
             type: String,
@@ -28,9 +28,39 @@ const productSchema = mongoose.Schema(
         timestamps: true,
     }
 )
+const mainSchema = mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: [true, "Please enter the main's name"],
+        },
+        ingredients: {
+            type: Array,
+            required: true,
+            default: 0,
+        },
+        instructions: {
+            type: String,
+            required: true
+        },
+        hints: {
+            type: String,
+            required: false
+        },
+        image: {
+            type: String,
+            required: false,
+        }
+    },
+    {
+        timestamps: true,
+    }
+)
 
-const Product = mongoose.model('Soup', productSchema);
-const ProductMain = mongoose.model('Main', productSchema);
+const Soup = mongoose.model('Soup', soupSchema);
+const Main = mongoose.model('Main', mainSchema);
 
-module.exports = Product;
-module.exports = ProductMain
+module.exports = {
+    Soup,
+    Main
+}
