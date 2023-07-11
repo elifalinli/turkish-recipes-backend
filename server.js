@@ -1,8 +1,11 @@
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const { Soup, Main } = require("./models/model.js");
-const credentials = require("./credentials");
 const app = express();
+
+const credentials = process.env.CREDENTIALS;
+
 
 app.use(express.json());
 
