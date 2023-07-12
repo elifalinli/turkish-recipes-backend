@@ -56,11 +56,41 @@ const mainSchema = mongoose.Schema(
         timestamps: true,
     }
 )
+const saladSchema = mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: [true, "Please enter the salad's name"],
+        },
+        ingredients: {
+            type: Array,
+            required: true,
+            default: 0,
+        },
+        instructions: {
+            type: String,
+            required: true
+        },
+        hints: {
+            type: String,
+            required: false
+        },
+        image: {
+            type: String,
+            required: false,
+        }
+    },
+    {
+        timestamps: true,
+    }
+)
 
 const Soup = mongoose.model('Soup', soupSchema);
 const Main = mongoose.model('Main', mainSchema);
+const Salad = mongoose.model('Salad', saladSchema)
 
 module.exports = {
     Soup,
-    Main
+    Main,
+    Salad
 }

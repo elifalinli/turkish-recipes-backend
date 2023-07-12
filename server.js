@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
-const { Soup, Main } = require("./models/model.js");
+const { Soup, Main, Salad } = require("./models/model.js");
 const app = express();
 
 const credentials = process.env.CREDENTIALS;
@@ -33,6 +33,15 @@ app.get("/main", async (req, res) => {
   }
 });
 
+app.get("/salad", async (req, res) => {
+  try {
+    const salads = await Salad.find({});
+    res.status(200).json(salads);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.get("/main/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -48,6 +57,16 @@ app.get("/soup/:id", async (req, res) => {
     const { id } = req.params;
     const soup = await Soup.findById(id);
     res.status(200).json(soup);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.get("/salad/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const salad = await Salad.findById(id);
+    res.status(200).json(salad);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -73,6 +92,16 @@ app.post("/main", async (req, res) => {
   }
 });
 
+app.post("/salad", async (req, res) => {
+  try {
+    const salad = await Salad.create(req.body);
+    res.status(201).json(salad);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.patch("/soup/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -83,6 +112,21 @@ app.patch("/soup/:id", async (req, res) => {
         .json({ message: `cannot find any soups with id ${id}` });
     }
     res.status(200).json(soup);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.patch("/salad/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const salad = await Salad.findByIdAndUpdate(id, req.body);
+    if (!salad) {
+      return res
+        .status(404)
+        .json({ message: `cannot find any salads with id ${id}` });
+    }
+    res.status(200).json(salad);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -111,6 +155,19 @@ app.delete("/soup/:id", async(req,res) => {
       return res.status(404).json({ message: `Cannot find any soup with id ${id}`})
     }
     res.status(204).json(soup)
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+})
+
+app.delete("/salad/:id", async(req,res) => {
+  try {
+    const {id} = req.params;
+    const salad = await Salad.findByIdAndDelete(id);
+    if(!salad) {
+      return res.status(404).json({ message: `Cannot find any salad with id ${id}`})
+    }
+    res.status(204).json(salad)
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
