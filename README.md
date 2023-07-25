@@ -8,9 +8,9 @@ This project aims to sharpen my back-end skills but I plan on adding an front-en
 
 The server can be run by " npm run dev " with Nodemon in the terminal. Without Nodemon, the command is " npm run serve ".
 
-## Environmental Variables
+## Environment Variables
 
-This project uses environmental variables to securely store sensitive information and configure the application. Follow the steps below to set up the necessary environmental variables:
+This project uses environment variables to securely store sensitive information and configure the application. Follow the steps below to set up the necessary environmental variables:
 
 1. Create a new file in the project root directory and name it `.env`.
 
