@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
-const { Soup, Main, Salad } = require("./models/model.js");
+const { Soup, Main, Salad, Side } = require("./models/model.js");
 const app = express();
 
 const credentials = process.env.CREDENTIALS;
@@ -42,6 +42,15 @@ app.get("/salad", async (req, res) => {
   }
 });
 
+app.get("/side", async (req, res) => {
+  try {
+    const sides = await Side.find({});
+    res.status(200).json(sides);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.get("/main/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -71,6 +80,15 @@ app.get("/salad/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+app.get("/side/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const side = await Side.findById(id);
+    res.status(200).json(side);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 app.post("/soup", async (req, res) => {
   try {
@@ -96,6 +114,16 @@ app.post("/salad", async (req, res) => {
   try {
     const salad = await Salad.create(req.body);
     res.status(201).json(salad);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/side", async (req, res) => {
+  try {
+    const side = await Side.create(req.body);
+    res.status(201).json(side);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
@@ -147,6 +175,21 @@ app.patch("/main/:id", async (req, res) => {
   }
 });
 
+app.patch("/side/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const side = await Side.findByIdAndUpdate(id, req.body);
+    if (!side) {
+      return res
+        .status(404)
+        .json({ message: `cannot find any sides with id ${id}` });
+    }
+    res.status(200).json(side);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.delete("/soup/:id", async(req,res) => {
   try {
     const {id} = req.params;
@@ -181,6 +224,19 @@ app.delete("/main/:id", async(req,res) => {
       return res.status(404).json({ message: `Cannot find any main with id ${id}`})
     }
     res.status(204).json(main)
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+})
+
+app.delete("/side/:id", async(req,res) => {
+  try {
+    const {id} = req.params;
+    const side = await Side.findByIdAndDelete(id);
+    if(!side) {
+      return res.status(404).json({ message: `Cannot find any side with id ${id}`})
+    }
+    res.status(204).json(side)
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
